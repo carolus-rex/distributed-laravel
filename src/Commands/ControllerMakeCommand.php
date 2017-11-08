@@ -6,11 +6,8 @@ use Illuminate\Routing\Console\ControllerMakeCommand as LaravelControllerMakeCom
 
 class ControllerMakeCommand extends LaravelControllerMakeCommand
 {
-    protected function rootNamespace()
-    {
-        return "Components\\";
-    }
-
+    use CommandGeneratorTrait;
+    
     protected function realRootNamespace()
     {
         return $this->laravel->getNamespace();
@@ -21,17 +18,6 @@ class ControllerMakeCommand extends LaravelControllerMakeCommand
         $name = str_replace_first($this->rootNamespace(), '', $name);
 
         return $this->laravel->basePath().'/components/'.str_replace('\\', '/', $name).$this->type.'.php';
-    }
-
-    /**
-     * Get the default namespace for the class.
-     *
-     * @param  string  $rootNamespace
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        return $rootNamespace."\\".$this->getNameInput().'\Controllers';
     }
 
     protected function replaceNamespace(&$stub, $name)

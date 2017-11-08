@@ -10,7 +10,10 @@ class CommandServiceProvider extends ServiceProvider
 {
 	protected $defer = true;
 
-	protected $commands = ["ControllerMakeCommand" => "command.controller.make"];
+	protected $commands = [
+		"ControllerMakeCommand" => "command.controller.make",
+		"ModelMakeCommand" => "command.model.make"
+	];
 
     public function register()
     {
