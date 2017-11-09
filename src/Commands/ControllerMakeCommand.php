@@ -2,6 +2,8 @@
 
 namespace Optimus\Api\System\Commands;
 
+use Illuminate\Support\Str;
+
 use Illuminate\Routing\Console\ControllerMakeCommand as LaravelControllerMakeCommand;
 
 class ControllerMakeCommand extends LaravelControllerMakeCommand
@@ -36,5 +38,20 @@ class ControllerMakeCommand extends LaravelControllerMakeCommand
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
 
         return str_replace('DummyClass', $class.$this->type, $stub);
+    }
+
+    protected function parseModel($model)
+    {
+        if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
+            throw new InvalidArgumentException('Model name contains invalid characters.');
+        }
+
+        $model = trim(str_replace('/', '\\', $model), '\\');
+
+        if (! Str::startsWith($model, $rootNamespace = "Components\\".$model."\\Models\\")) {
+            $model = $rootNamespace.$model;
+        }
+
+        return $model;
     }
 }
